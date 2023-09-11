@@ -19,7 +19,7 @@ jobs:
         ruby-version: 2.7
 
     - name: Get Mars weather data
-      run: ruby ../scripts/api_getter.rb
+      run: ruby ./scripts/api_getter.rb
 
     - name: Commit and push if README.md has changed
       run: |
