@@ -23,7 +23,7 @@ jobs:
         ruby-version: 2.7
 
     - name: Generate random C++ code
-      run: ruby .github/scripts/code_generator.rb
+      run: ruby .github/scripts/api_getter.rb
 
     - name: Commit and push with probability
       run: |
