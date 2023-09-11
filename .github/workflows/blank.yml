@@ -1,0 +1,36 @@
+name: Generate and Push Random C++ Code
+
+# Controls when the workflow will run
+on:
+  # Schedule to run at different times throughout the week
+  schedule:
+    - cron: '0 2,14 * * MON,WED,FRI'
+    - cron: '0 6,18 * * TUE,THU,SAT'
+    
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.7
+
+    - name: Generate random C++ code
+      run: ruby .github/scripts/code_generator.rb
+
+    - name: Commit and push with probability
+      run: |
+        if [ $(( RANDOM % 7 )) -lt 4 ]; then
+          git config user.name "Matthieu-Jck"
+          git config user.email "matthieu.jacques.2077@gmail.com"
+          git add .
+          git commit -m "Added generated C++ code"
+          git push
+        fi
