@@ -1,12 +1,12 @@
 require 'net/http'
 require 'json'
 
-url = URI("https://api.nasa.gov/insight_weather/?api_key=qlDL7aSsPYvtXmlOhswtisUdfyAfrP4xrpwQQOFn&feedtype=json&ver=1.0")
+url = URI("https://mars.nasa.gov/rss/api/?feed=weather&category=insight_temperature&feedtype=json&ver=1.0")
 response = Net::HTTP.get(url)
 data = JSON.parse(response)
 
-if data['sol_keys'] && !data['sol_keys'].empty?
-  first_sol = data['sol_keys'].first
+if data && !data.empty?
+  first_sol = data.keys.first
   weather_data = data[first_sol]
 
   # Check if weather data is present
@@ -34,5 +34,5 @@ if data['sol_keys'] && !data['sol_keys'].empty?
     puts "Weather data not available for Sol #{first_sol}"
   end
 else
-  puts "No sol_keys available in the API response"
+  puts "No data available in the API response"
 end
