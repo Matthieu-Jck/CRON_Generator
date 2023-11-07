@@ -1,4 +1,4 @@
-name: Update Mars Weather Report
+name: Update Toulouse Weather Report
 
 on:
   schedule:
@@ -18,7 +18,7 @@ jobs:
       with:
         ruby-version: 2.7
 
-    - name: Get Mars weather data
+    - name: Get Toulouse weather data
       run: ruby ./scripts/api_getter.rb
 
     - name: Commit and push if README.md has changed
@@ -27,7 +27,7 @@ jobs:
         git config user.email "matthieu.jacques.2077@gmail.com"
         git add README.md
         if git diff --staged | grep README.md; then
-          git commit -m "Update Mars weather report"
+          git commit -m "Update Toulouse weather report"
           git push
         else
           echo "No changes to commit"
