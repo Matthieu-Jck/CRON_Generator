@@ -1,38 +1,31 @@
 require 'net/http'
 require 'json'
 
-url = URI("https://mars.nasa.gov/rss/api/?feed=weather&category=insight_temperature&feedtype=json&ver=1.0")
+
+city_id = '2972315'
+api_key = '8763fab78dfe2059f03dbe174ced5d97'
+url = URI("http://api.openweathermap.org/data/2.5/weather?id=#{city_id}&appid=#{api_key}&units=metric")
+
 response = Net::HTTP.get(url)
 data = JSON.parse(response)
 
-if data && !data.empty?
-  first_sol = data.keys.first
-  weather_data = data[first_sol]
+if data && data["weather"]
+  weather_data = data
 
-  # Check if weather data is present
-  if weather_data
-    File.open("README.md", "w") do |file|
-      file.puts "# Mars Weather Report\n"
-      file.puts "Weather data for Sol #{first_sol}:\n"
-      file.puts "- Season: #{weather_data['Season']}"
-      file.puts "- First UTC: #{weather_data['First_UTC']}"
-      file.puts "- Last UTC: #{weather_data['Last_UTC']}"
-      file.puts "\n**Atmospheric Temperature (°C):**"
-      file.puts "- Average: #{weather_data.dig('AT', 'av')}"
-      file.puts "- Minimum: #{weather_data.dig('AT', 'mn')}"
-      file.puts "- Maximum: #{weather_data.dig('AT', 'mx')}"
-      file.puts "\n**Horizontal Wind Speed (m/s):**"
-      file.puts "- Average: #{weather_data.dig('HWS', 'av')}"
-      file.puts "- Minimum: #{weather_data.dig('HWS', 'mn')}"
-      file.puts "- Maximum: #{weather_data.dig('HWS', 'mx')}"
-      file.puts "\n**Atmospheric Pressure (Pa):**"
-      file.puts "- Average: #{weather_data.dig('PRE', 'av')}"
-      file.puts "- Minimum: #{weather_data.dig('PRE', 'mn')}"
-      file.puts "- Maximum: #{weather_data.dig('PRE', 'mx')}"
-    end
-  else
-    puts "Weather data not available for Sol #{first_sol}"
+  File.open("README.md", "w") do |file|
+    file.puts "# Current Weather Report\n"
+    file.puts "Current weather data for the selected location:\n"
+    file.puts "- Weather Condition: #{weather_data['weather'].first['main']}"
+    file.puts "- Description: #{weather_data['weather'].first['description']}"
+    file.puts "- Temperature: #{weather_data['main']['temp']}°C"
+    file.puts "- Feels Like: #{weather_data['main']['feels_like']}°C"
+    file.puts "- Minimum Temperature: #{weather_data['main']['temp_min']}°C"
+    file.puts "- Maximum Temperature: #{weather_data['main']['temp_max']}°C"
+    file.puts "- Pressure: #{weather_data['main']['pressure']} hPa"
+    file.puts "- Humidity: #{weather_data['main']['humidity']}%"
+    file.puts "- Wind Speed: #{weather_data['wind']['speed']} m/s"
+    file.puts "- Wind Degree: #{weather_data['wind']['deg']}°"
   end
 else
-  puts "No data available in the API response"
+  puts "Weather data not available for the provided location"
 end
