@@ -1,7 +1,6 @@
 require 'net/http'
 require 'json'
 
-# Replace with your actual city ID and API key from OpenWeatherMap
 city_id = '2972315'
 api_key = '8763fab78dfe2059f03dbe174ced5d97'
 url = URI("http://api.openweathermap.org/data/2.5/weather?id=#{city_id}&appid=#{api_key}&units=metric")
