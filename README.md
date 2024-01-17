@@ -2,11 +2,11 @@
 Current weather data for the selected location:
 - Weather Condition: Rain
 - Description: light rain
-- Temperature: 12.97°C
-- Feels Like: 12.62°C
-- Minimum Temperature: 12.65°C
-- Maximum Temperature: 12.99°C
-- Pressure: 1006 hPa
-- Humidity: 88%
-- Wind Speed: 2.57 m/s
-- Wind Degree: 130°
+- Temperature: 10.95°C
+- Feels Like: 10.37°C
+- Minimum Temperature: 10.45°C
+- Maximum Temperature: 13.2°C
+- Pressure: 1000 hPa
+- Humidity: 87%
+- Wind Speed: 5.66 m/s
+- Wind Degree: 140°
