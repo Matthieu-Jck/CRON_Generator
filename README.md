@@ -2,11 +2,11 @@
 Current weather data for the selected location:
 - Weather Condition: Clear
 - Description: clear sky
-- Temperature: -4°C
-- Feels Like: -6.39°C
-- Minimum Temperature: -4.01°C
-- Maximum Temperature: -2.91°C
-- Pressure: 1025 hPa
-- Humidity: 86%
+- Temperature: 3.85°C
+- Feels Like: 2.58°C
+- Minimum Temperature: 2.12°C
+- Maximum Temperature: 3.99°C
+- Pressure: 1027 hPa
+- Humidity: 52%
 - Wind Speed: 1.54 m/s
-- Wind Degree: 0°
+- Wind Degree: 80°
