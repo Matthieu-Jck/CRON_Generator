@@ -2,8 +2,9 @@ name: Update Toulouse Weather Report
 
 on:
   schedule:
-    - cron: '0 2,14 * * MON,WED,FRI'
-    - cron: '0 6,18 * * TUE,THU,SAT'
+    # Schedule to run on all the days mentioned across both weeks, to cover the complete cycle.
+    - cron: '0 2 * * MON,TUE,WED,SAT' # At 02:00 on Monday, Tuesday, Wednesday, and Saturday.
+    - cron: '0 2 * * WED,FRI,SAT' # Redundant for Wednesday and Saturday, needed for Friday.
   workflow_dispatch:
 
 jobs:
@@ -18,10 +19,27 @@ jobs:
       with:
         ruby-version: 2.7
 
+    # Determine the week type (A or B).
+    - name: Determine week type
+      id: week_type
+      run: |
+        week_num=$(date +'%U') # Get the week number of the year.
+        week_type=$((week_num % 2)) # Determine if it's an even (0) or odd (1) week.
+        echo "Week type (0 for A, 1 for B): $week_type"
+        echo "::set-output name=type::$week_type"
+
+    # Conditional step to get Toulouse weather data based on the week type and day.
     - name: Get Toulouse weather data
+      if: >
+        (steps.week_type.outputs.type == '0' && ('Mon' == strftime('%a') || 'Tue' == strftime('%a') || 'Wed' == strftime('%a') || 'Sat' == strftime('%a'))) ||
+        (steps.week_type.outputs.type == '1' && ('Wed' == strftime('%a') || 'Fri' == strftime('%a') || 'Sat' == strftime('%a')))
       run: ruby ./scripts/api_getter.rb
 
+    # Conditional commit and push, using the same condition as above.
     - name: Commit and push if README.md has changed
+      if: >
+        (steps.week_type.outputs.type == '0' && ('Mon' == strftime('%a') || 'Tue' == strftime('%a') || 'Wed' == strftime('%a') || 'Sat' == strftime('%a'))) ||
+        (steps.week_type.outputs.type == '1' && ('Wed' == strftime('%a') || 'Fri' == strftime('%a') || 'Sat' == strftime('%a')))
       run: |
         git config user.name "Matthieu-Jck"
         git config user.email "matthieu.jacques.2077@gmail.com"
@@ -32,4 +50,5 @@ jobs:
         else
           echo "No changes to commit"
         fi
+
 
